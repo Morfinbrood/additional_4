@@ -12,11 +12,12 @@ module.exports = function multiply(first, second) {
     y = first;
   }
 
-  x="999";
-  y="888";
+ // x="999";
+ // y="888";
 
   // получаем массив со строками 1-го этапа поциферного перемножения столбиком - результаты в строках и перевернуты, т.е. 123*11= ["321", "321"]
   let arr=[];
+  let offseDecs="none";
   for (let iY = y.length-1; iY >=0; iY--) {
     let str="";
     //console.log("iY= ",iY, " y[iY]= ",y[iY]);
@@ -37,7 +38,10 @@ module.exports = function multiply(first, second) {
         overflowDec=0;
       }
     }
-    arr.push(str);
+    if (offseDecs=="none") offseDecs="";
+    else offseDecs=offseDecs+"0";
+    //console.log(" str+offseDecs=",offseDecs+ str);
+    arr.push(offseDecs+str);
   }
   //console.log ("arrReverse=   ",arr);
 
@@ -57,12 +61,13 @@ module.exports = function multiply(first, second) {
     for (let iArr = 1; iArr < arrNumbStr.length; iArr++) { //i От 1 потому что  x=arrNumbStr[0]; 2 потому что мы текущее число складываем со след.
       x=resultSumStr;
       y=arrNumbStr[iArr];
-      if (x.length>y.length){  // делаем так чтобы у нас сверху было число больше разрядности.
-        let suBVal=x;
+      //console.log("x.length= ",x.length," y.length= ",y.length);
+      if (y.length>x.length){  // делаем так чтобы у нас сверху было число больше разрядности.
+        let subVal=x;
         x=y;
         y=subVal;
       }
-      console.log ("iArr=", iArr," x= ",x," y= ",y);
+      //console.log ("iArr=", iArr," x= ",x," y= ",y);
       let str="";
       let overflowDec=0;
       for (let i = 1; i <= x.length; i++) {  //i - посимвольное смещение от конца  i=1 потому что при смещении 0 у нас будут траблы с x[length]
@@ -71,7 +76,7 @@ module.exports = function multiply(first, second) {
         if (i>y.length) numbY=0;     //  как только заканчиваются разряды меньшего числа подсовываем нули для сложения
         else numbY=Number(y[y.length-i]);
         let sum = numbX + numbY+overflowDec;
-        console.log("numbX= ", numbX," numbY= ",numbY," sum= ",sum);
+        //console.log("numbX= ", numbX," numbY= ",numbY," sum= ",sum);
         if (sum >9) {
           overflowDec=Math.floor(sum/10);   
           str=str+String(sum%10);
@@ -83,13 +88,14 @@ module.exports = function multiply(first, second) {
         }   
       }
       str=reverseStr(str);
-      console.log ("resultSumStr= ",str);
+      //console.log ("resultSumStr= ",str);
       resultSumStr=str;
     }
     return resultSumStr;
   }
-  arr=["123","456","789"];
-  console.log ("arr=   ",arr);
-  console.log("sumColumn(arr)=  ",sumColumn(arr));
+  //arr=["123","456","789"];
+  //console.log ("arr=   ",arr);
+  // console.log("sumColumn(arr)=  ",sumColumn(arr));
+  return sumColumn(arr);
 
 }
